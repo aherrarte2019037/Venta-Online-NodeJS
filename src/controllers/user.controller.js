@@ -4,8 +4,8 @@ export default class UserController {
 
     static async createAdmin() {
 
-        const userRepeat = await UserModel.findOne({ firstname: 'admin', lastname: 'admin', role: 'admin', email: 'admin@admin.com.gt' });
-        if( !userRepeat ) await UserModel.create({ firstname: "admin", lastname: "admin", age: 18, role: "admin", email: "admin@admin.com.gt", password: "123456" });
+        const userRepeat = await UserModel.findOne({ firstname: 'Admin', lastname: 'Admin', role: 'admin', email: 'admin@admin.com.gt' });
+        if( !userRepeat ) await UserModel.create({ firstname: "Admin", lastname: "Admin", age: 18, role: "admin", email: "admin@admin.com.gt", password: "123456" });
     
     }
 
@@ -15,9 +15,6 @@ export default class UserController {
         const user = new UserModel({ ...data });
 
         try {
-            const userRepeat = await UserModel.findOne({ email: data.email });
-            if( userRepeat ) return { registered: false, error: 'Email already exists' };
-
             await user.save();
             const response = {...user}._doc
             delete response.password

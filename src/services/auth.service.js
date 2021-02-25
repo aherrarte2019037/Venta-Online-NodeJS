@@ -39,6 +39,7 @@ Passport.use( 'authorize_user', new PassportJwt.Strategy( JwtOptions, async(jwtP
 
     try {
         const user = await UserModel.findById( jwtPayload.sub );
+        user.password = undefined;
         return done( null, user, { authorized: true } );
 
     } catch(error) {

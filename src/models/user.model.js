@@ -1,14 +1,19 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import uniqueValidator from 'mongoose-unique-validator';
+
 
 const UserSchema = mongoose.Schema({
     firstname: { type: String, required: [true, 'Firstname is required'], maxLength: 30 },
     lastname : { type: String, required: [true, 'Lastname is required'], maxLength: 30 },
     age      : { type: Number, required: [true, 'Age is required'], min: 10, max: 100 },
     role     : { type: String, enum: ['admin', 'client'], default: 'client' },
-    email    : { type: String, required: [true, 'Email is required'], maxLength: 254 },
+    email    : { type: String, required: [true, 'Email is required'], maxLength: 254, unique: true },
     password : { type: String, required: [true, 'Password is required'], mingLength: 8, maxLength: 30 }
 });
+
+
+UserSchema.plugin( uniqueValidator, { message: '{PATH} already exists.' } );
 
 
 UserSchema.pre( 'save', async function(next) {

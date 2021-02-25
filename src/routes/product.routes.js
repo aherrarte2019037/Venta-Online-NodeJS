@@ -8,7 +8,6 @@ const router = express.Router();
 router.get('/', async(req, res) => {
 
     try {
-        
         const response = await ProductController.getAll();
         res.status(200).send(response)
 
@@ -51,7 +50,7 @@ router.put('/:id', async(req, res) => {
 
     try {
         const id = req.params.id
-        const data = req.params.id;
+        const data = req.body;
         const response = await ProductController.updateById( id, data );
         res.status(200).send(response)
 

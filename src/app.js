@@ -6,6 +6,7 @@ import CategoryRoutes from './routes/category.routes.js';
 import UserRoutes from './routes/user.routes.js';
 import Passport from 'passport';
 import UserController from './controllers/user.controller.js';
+import CategoryController from './controllers/category.controller.js';
 import './services/auth.service.js';
 
 
@@ -38,4 +39,5 @@ app.use( '/api/category', CategoryRoutes );
 app.listen( PORT , () => {
     console.log(`Servidor en el puerto ${PORT}`);
     UserController.createAdmin();
+    CategoryController.createDefaultCategory();
 });

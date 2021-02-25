@@ -34,15 +34,11 @@ export default class ProductController {
     static async add( addData ) {
 
         try {
-            const productRepeat = await ProductModel.findOne({ name: addData.name });
-            if( productRepeat ) return { added: false, error: 'Product already exists' };
-
             const data = await ProductModel.create({ ...addData });
-
             return { added: true, item: data };
 
         } catch(error) {
-            return { added: false, error: error };
+            return { added: false, error: error?.message };
         }
 
     }

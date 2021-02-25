@@ -9,10 +9,8 @@ const router = express.Router();
 
 router.post('/register', AuthMiddleware.registerAdmin, async(req, res) => {
 
-    const data = req.body;
-
     try {
-
+        const data = req.body;
         const response = await UserController.register( data );
         res.status(200).send(response);
         
@@ -42,7 +40,6 @@ router.post('/login', (req, res) => {
 router.put('/:id', AuthMiddleware.checkUserRole, async(req, res) => {
 
     try {
-        
         const id = req.params.id
         const data = req.body;
         const response = await UserController.updateById( id, data );
@@ -58,7 +55,6 @@ router.put('/:id', AuthMiddleware.checkUserRole, async(req, res) => {
 router.delete('/:id', AuthMiddleware.checkUserRole, async(req, res) => {
 
     try {
-        
         const id = req.params.id
         const response = await UserController.deleteById( id );
         res.status(200).send(response);

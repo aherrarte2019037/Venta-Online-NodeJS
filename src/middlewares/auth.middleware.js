@@ -9,7 +9,7 @@ export default class AuthMiddleware {
         if( req.body.role === 'admin' ) {
             Passport.authenticate( 'authorize_user', {session: false}, (error, user, message) =>{
 
-                if(error || !user || !user.role === 'admin') {
+                if(error || !user || user.role !== 'admin') {
                     res.status(500).send('Unauthorized');
         
                 } else {
