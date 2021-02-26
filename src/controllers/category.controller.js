@@ -1,10 +1,16 @@
 import CategoryModel from '../models/category.model.js';
+import ProductController from '../controllers/product.controller.js';
+import mongoose from 'mongoose';
+
 
 export default class CategoryController {
 
+    static defaultCategory;
+
+
     static async createDefaultCategory() {
-       const categoryRepeat = await CategoryModel.findOne({ $or: [{ name: 'default' }, { name: 'Default' }] });
-       if( !categoryRepeat ) CategoryModel.create({ name: 'Default' });
+       this.defaultCategory = await CategoryModel.findOne({ $or: [{ name: 'default' }, { name: 'Default' }] });
+       if( !this.defaultCategory ) this.defaultCategory = await CategoryModel.create({ name: 'Default' });
     }
     
 
@@ -70,10 +76,29 @@ export default class CategoryController {
             const data = await CategoryModel.findByIdAndDelete( id );
             if( !data ) return { deleted: false, error: 'Id invalid or not found' };
 
+            await ProductController.updateToDefault( id );
+
             return { deleted: true, item: data };
 
         } catch(error) {
             return { deleted: false, error: error };
+        }
+
+    }
+
+
+    static async existsCategory( data ) {
+
+        try {
+            const id = mongoose.Types.ObjectId( mongoose.isValidObjectId(data)? data:'000000000000' );
+            const category = await CategoryModel.findOne({ $or: [{name: new RegExp(`^${data}$`, 'i')}, {_id: id}] });
+
+            if( !category ) return false;
+
+            return category;
+
+        } catch (error) {
+            return false;
         }
 
     }

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
+
 const ProductSchema = mongoose.Schema({
     name       : { type: String, required: [true, 'Name is required'], maxLength: 30, unique: true },
     price      : { type: Number, required: [true, 'Price is required'], min: 0 },
@@ -10,7 +11,7 @@ const ProductSchema = mongoose.Schema({
 });
 
 
-ProductSchema.plugin( uniqueValidator, { message: '{PATH} already exists.' } );
+ProductSchema.plugin( uniqueValidator, { message: 'Product already exists.' } );
 
 
 export default mongoose.model('Product', ProductSchema);

@@ -13,7 +13,7 @@ const UserSchema = mongoose.Schema({
 });
 
 
-UserSchema.plugin( uniqueValidator, { message: '{PATH} already exists.' } );
+UserSchema.plugin( uniqueValidator, { message: 'Email already exists.' } );
 
 
 UserSchema.pre( 'save', async function(next) {
