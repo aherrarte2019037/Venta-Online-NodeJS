@@ -1,10 +1,12 @@
 import express from 'express';
-import CategoryController from '../controllers/category.controller.js'
+import CategoryController from '../controllers/category.controller.js';
+import AuthMiddleware from '../middlewares/auth.middleware.js';
+
 
 const router = express.Router();
 
 
-router.get('/', async(req, res) => {
+router.get('/', AuthMiddleware.authorizeAdmin, async(req, res) => {
 
     try {
         const response = await CategoryController.getAll();
@@ -17,7 +19,7 @@ router.get('/', async(req, res) => {
 });
 
 
-router.get('/:id', async(req, res) => {
+router.get('/:id', AuthMiddleware.authorizeAdmin, async(req, res) => {
 
     try {
         const id = req.params.id;
@@ -31,7 +33,7 @@ router.get('/:id', async(req, res) => {
 });
 
 
-router.post('/', async(req, res) => {
+router.post('/', AuthMiddleware.authorizeAdmin, async(req, res) => {
 
     try {
         const data = req.body
@@ -45,7 +47,7 @@ router.post('/', async(req, res) => {
 });
 
 
-router.put('/:id', async(req, res) => {
+router.put('/:id', AuthMiddleware.authorizeAdmin, async(req, res) => {
 
     try {
         const id = req.params.id
@@ -60,7 +62,7 @@ router.put('/:id', async(req, res) => {
 });
 
 
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', AuthMiddleware.authorizeAdmin, async(req, res) => {
 
     try {
         const id = req.params.id

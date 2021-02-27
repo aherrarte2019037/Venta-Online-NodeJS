@@ -25,6 +25,22 @@ export default class AuthMiddleware {
     }
 
 
+    static authorizeAdmin( req, res, next ) {
+
+        Passport.authenticate( 'authorize_user', {session: false}, (error, user, message) =>{
+
+            if( error || !user || user.role !== 'admin' ) {
+                res.status(500).send('Unauthorized');
+        
+            } else {
+                next();
+            }
+        
+        })(req, res, next);
+
+    }
+
+
     static authorizeUser( req, res, next ) {
 
         Passport.authenticate( 'authorize_user', {session: false}, (error, user, message) =>{
@@ -33,6 +49,7 @@ export default class AuthMiddleware {
                 res.status(500).send('Unauthorized');
         
             } else {
+                req.user = user;
                 next();
             }
         

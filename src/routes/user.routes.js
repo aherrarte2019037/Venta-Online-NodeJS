@@ -66,4 +66,21 @@ router.delete('/:id', AuthMiddleware.checkUserRole, async(req, res) => {
 });
 
 
+router.post('/cart', AuthMiddleware.authorizeUser, async(req, res) => {
+
+    try {
+        const id = req.user.id;
+        const product = req.body.product;
+        const quantity = req.body.quantity;
+        const response = await UserController.addProduct( id, product, quantity );
+
+        res.status(200).send(response);
+
+    } catch(error) {
+        res.status(200).send({ productAdded: false, error: error });
+    }
+
+});
+
+
 export default router;

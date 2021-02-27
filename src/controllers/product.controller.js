@@ -32,6 +32,24 @@ export default class ProductController {
     }
 
 
+    static async getStockById( id ) {
+
+        try {
+            
+            const data = await ProductModel.findById( id );
+            if( !data || data.length === 0 ) return { error: 'Id invalid or not found' };
+
+            if( data.stock <= 0 ) return { available: false, stock: data.stock, product: data.name, price: data.price };
+
+            return { available: true, stock: data.stock, product: data.name, price: data.price };
+
+        } catch(error) {
+            return { error: error }
+        }
+
+    }
+
+
     static async add( addData ) {
 
         try {
