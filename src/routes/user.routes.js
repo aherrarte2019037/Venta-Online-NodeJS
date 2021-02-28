@@ -60,13 +60,13 @@ router.delete('/:id', AuthMiddleware.checkUserRole, async(req, res) => {
         res.status(200).send(response);
 
     } catch(error) {
-        res.status(500).send({  updated: false, error: error });
+        res.status(500).send({  deleted: false, error: error });
     }
 
 });
 
 
-router.post('/cart', AuthMiddleware.authorizeUser, async(req, res) => {
+router.post('/cart', AuthMiddleware.authorizeClient, async(req, res) => {
 
     try {
         const id = req.user.id;
@@ -78,6 +78,23 @@ router.post('/cart', AuthMiddleware.authorizeUser, async(req, res) => {
 
     } catch(error) {
         res.status(200).send({ productAdded: false, error: error });
+    }
+
+});
+
+
+router.delete('/cart/:product', AuthMiddleware.authorizeClient, async(req, res) => {
+
+    try {
+        const id = req.user.id;
+        const product = req.params.product;
+        const quantity = req.body.quantity;
+        const response = await UserController.deleteProductById( id, product, quantity );
+
+        res.status(200).send(response);
+
+    } catch(error) {
+        res.status(200).send({ productDeleted: false, error: error });
     }
 
 });

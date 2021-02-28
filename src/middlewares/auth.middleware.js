@@ -41,11 +41,11 @@ export default class AuthMiddleware {
     }
 
 
-    static authorizeUser( req, res, next ) {
+    static authorizeClient( req, res, next ) {
 
         Passport.authenticate( 'authorize_user', {session: false}, (error, user, message) =>{
 
-            if( error || !user ) {
+            if( error || !user || user.role !== 'client' ) {
                 res.status(500).send('Unauthorized');
         
             } else {
