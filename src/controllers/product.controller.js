@@ -1,5 +1,6 @@
 import ProductModel from '../models/product.model.js';
 import CategoryController from '../controllers/category.controller.js';
+import mongoose from 'mongoose';
 
 
 export default class ProductController {
@@ -18,12 +19,14 @@ export default class ProductController {
     }
 
 
-    static async getById( id ) {
+    static async getOne( product ) {
 
         try {
-            const data = await ProductModel.findById( id ).populate('category', {_id: 0, __v: 0});
-            if( !data || data.length === 0 ) return { error: 'Id invalid or not found' };
-            return data;
+            const id = mongoose.Types.ObjectId( mongoose.isValidObjectId(product)? product:'000000000000' );
+            const productExists = await ProductModel.findOne({ $or: [{name: new RegExp(`^${product}$`, 'i')}, {_id: id}] }).populate('category', {_id: 0, __v: 0});
+            if( !product || !productExists ) return { error: 'Product not found' };
+            
+            return productExists;
 
         } catch(error) {
             return { error: error }

@@ -19,11 +19,11 @@ router.get('/', AuthMiddleware.authorizeAdmin, async(req, res) => {
 });
 
 
-router.get('/:id', AuthMiddleware.authorizeAdmin, async(req, res) => {
+router.get('/:product', AuthMiddleware.authorizeUser, async(req, res) => {
 
     try {
-        const id = req.params.id;
-        const response = await ProductController.getById( id );
+        const product = req.params.product;
+        const response = await ProductController.getOne( product );
         res.status(200).send(response)
 
     } catch (error) {
