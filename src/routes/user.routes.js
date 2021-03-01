@@ -7,6 +7,35 @@ import Passport from 'passport';
 const router = express.Router();
 
 
+router.get('/bill', AuthMiddleware.authorizeClient, async(req, res) => {
+
+    try {
+        const id = req.user.id;
+        const response = await UserController.getBills( id );
+        res.status(200).send(response);
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
+});
+
+
+router.get('/bill/:id', AuthMiddleware.authorizeClient, async(req, res) => {
+
+    try {
+        const userId = req.user.id;
+        const billId = req.params.id;
+        const response = await UserController.getBillById( userId, billId );
+        res.status(200).send(response);
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
+});
+
+
 router.post('/register', AuthMiddleware.registerAdmin, async(req, res) => {
 
     try {

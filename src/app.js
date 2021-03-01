@@ -4,6 +4,7 @@ import AppRoutes from './routes/app.routes.js';
 import ProductoRoutes from './routes/product.routes.js';
 import CategoryRoutes from './routes/category.routes.js';
 import UserRoutes from './routes/user.routes.js';
+import BillRoutes from './routes/bill.routes.js';
 import Passport from 'passport';
 import UserController from './controllers/user.controller.js';
 import CategoryController from './controllers/category.controller.js';
@@ -33,6 +34,7 @@ app.use( '/api', AppRoutes );
 app.use( '/api/product', ProductoRoutes );
 app.use( '/api/user', UserRoutes );
 app.use( '/api/category', CategoryRoutes );
+app.use( '/api/bill', BillRoutes );
 
 
 //Iniciar Servidor

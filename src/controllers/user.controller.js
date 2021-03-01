@@ -1,5 +1,6 @@
 import UserModel from '../models/user.model.js';
 import ProductModel from '../models/product.model.js';
+import BillController from '../controllers/bill.controller.js';
 import mongoose from 'mongoose';
 
 
@@ -72,7 +73,7 @@ export default class UserController {
             const includes = user.shopping_cart.products.some( product => productExists.id === product.id );
 
             if( includes ){
-                const data = await UserModel.findOneAndUpdate( { 'shopping_cart.products._id': productExists._id, _id: userId }, { $inc: { 'shopping_cart.products.$.quantity': quantity } } ).populate('shopping_cart.products._id', 'name price')
+                const data = await UserModel.findOneAndUpdate( { 'shopping_cart.products._id': productExists._id, _id: userId }, { $inc: { 'shopping_cart.products.$.quantity': quantity } } ).populate('shopping_cart.products._id', 'name price');
                 const updatedData = await this.updateCartTotals( userId, data.shopping_cart.products );
                 return { productAdded: true, shopping_cart: updatedData.shopping_cart };
             }
@@ -130,6 +131,38 @@ export default class UserController {
 
         } catch(error) {
             return { deleted: false, error: error };
+        }
+
+    }
+
+
+    static async getBills( userId ) {
+
+        try {
+            const data = await UserModel.findById( userId, { shopping_cart: 0, role: 0, _id: 0, __v: 0 } ).populate('bills._id');
+            if( !data ) return 'Data not found';
+
+            return data;
+            
+        } catch (error) {
+            return { error: error }
+        }
+
+    }
+
+
+    static async getBillById( userId, billId ) {
+
+        try {
+            const data = await UserModel.findOne( { _id: userId, 'bills._id': billId }, { 'bills.$': 1 } );
+            if( !data || !billId ) return { error: 'Data not found'};
+
+            const bill = await 
+
+            return data;
+            
+        } catch (error) {
+            return { error: error }
         }
 
     }

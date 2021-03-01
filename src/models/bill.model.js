@@ -1,8 +1,14 @@
 import mongoose from 'mongoose';
+import { format } from 'date-fns';
 
 
 const BillSchema = mongoose.Schema({
-    name: { type: String, required: [true, 'Name is required'], maxLength: 30, unique: true }
+    date    : { type: String, required: [true, 'Date is required'] },
+    total   : { type: Number, required: [true, 'Total is required'], min: 0 },
+    products: [{
+        _id     : { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+        quantity: { type: Number, min: 1, default: 1 }
+    }]
 });
 
 

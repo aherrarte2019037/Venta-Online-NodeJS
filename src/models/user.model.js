@@ -10,6 +10,7 @@ const UserSchema = mongoose.Schema({
     role         : { type: String, enum: ['admin', 'client'], default: 'client' },
     email        : { type: String, required: [true, 'Email is required'], maxLength: 254, unique: true },
     password     : { type: String, required: [true, 'Password is required'], mingLength: 8, maxLength: 30 },
+    bills        : [{ _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Bill' } }],
     shopping_cart: {
         products : [{ 
             _id     : { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },

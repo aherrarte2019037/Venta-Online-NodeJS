@@ -6,7 +6,7 @@ import AuthMiddleware from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 
-router.get('/', AuthMiddleware.authorizeAdmin, async(req, res) => {
+router.get('/', AuthMiddleware.authorizeUser, async(req, res) => {
 
     try {
         const response = await CategoryController.getAll();

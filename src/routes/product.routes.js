@@ -33,6 +33,20 @@ router.get('/:product', AuthMiddleware.authorizeUser, async(req, res) => {
 });
 
 
+router.get('/category/:category', AuthMiddleware.authorizeUser, async(req, res) => {
+
+    try {
+        const category = req.params.category;
+        const response = await ProductController.getByCategory( category );
+        res.status(200).send(response)
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+    
+});
+
+
 router.get('/stock/:id', AuthMiddleware.authorizeAdmin, async(req, res) => {
 
     try {
