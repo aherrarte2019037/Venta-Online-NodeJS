@@ -43,6 +43,8 @@ export default class BillController {
             if( !user ) return { billAdded: false, error: 'Invalid id or user not found' };
             if( user.shopping_cart.total === 0 ) return { billAdded: false, error: 'Empty shopping cart' };
 
+            console.log(user)
+
             for ( const product of user.shopping_cart.products ) {
                 await ProductController.updateSales( product.id, product.quantity );
             }

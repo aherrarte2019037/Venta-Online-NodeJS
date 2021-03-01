@@ -69,6 +69,8 @@ export default class UserController {
 
             if( quantity <= 0 || isNaN(quantity) ) return { productAdded: false, error: 'Cuantity invalid' };
 
+            if( productExists.stock <= 0 ) return { productAdded: false, error: 'Product out of stock' }
+
             const user = await UserModel.findById( userId );
             const includes = user.shopping_cart.products.some( product => productExists.id === product.id );
 
