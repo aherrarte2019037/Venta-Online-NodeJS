@@ -149,7 +149,13 @@ export default class ProductController {
 
     static async updateSales( id, sales ) {
 
-        await ProductModel.findByIdAndUpdate( id, { $inc: { sales: sales } } );
+        const updated = await ProductModel.findByIdAndUpdate( id, { $inc: { sales: sales } } );
+        if( sales <= updated.stock ) {
+            await ProductModel.findByIdAndUpdate( id, { $inc: { stock: sales*-1 } } );
+            return { succeed: true, item: [] };
+        }
+
+        return { succeed: false, item: updated };
 
     }
 

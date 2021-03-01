@@ -43,10 +43,9 @@ export default class BillController {
             if( !user ) return { billAdded: false, error: 'Invalid id or user not found' };
             if( user.shopping_cart.total === 0 ) return { billAdded: false, error: 'Empty shopping cart' };
 
-            console.log(user)
-
             for ( const product of user.shopping_cart.products ) {
-                await ProductController.updateSales( product.id, product.quantity );
+               const productUpdated = await ProductController.updateSales( product.id, product.quantity );
+               if( !productUpdated.succeed ) return { billAdded: false, error: { message: 'Product out of stock', quantity: product.quantity, stock: productUpdated.item.stock, product: productUpdated.item.name, id: productUpdated.item.id } }
             }
 
             const bill = await BillModel.create({ date: format(new Date(),'dd-MM-uuuu hh:mm:ss:a'), total: user.shopping_cart.total, products: user.shopping_cart.products });

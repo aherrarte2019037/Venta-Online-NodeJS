@@ -80,7 +80,7 @@ export default class UserController {
                 return { productAdded: true, shopping_cart: updatedData.shopping_cart };
             }
 
-            const data = await UserModel.findByIdAndUpdate( userId, { $push: {'shopping_cart.products': { _id: productExists.id }} } ).populate('shopping_cart.products._id', 'name price');
+            const data = await UserModel.findByIdAndUpdate( userId, { $push: {'shopping_cart.products': { _id: productExists.id, quantity: quantity }} } ).populate('shopping_cart.products._id', 'name price');
             if( !data ) return { productAdded: false, error: 'Something went wrong' };    
             const updatedData = await this.updateCartTotals( userId, data.shopping_cart.products );
 
