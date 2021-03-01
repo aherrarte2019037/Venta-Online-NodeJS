@@ -157,9 +157,9 @@ export default class UserController {
             const data = await UserModel.findOne( { _id: userId, 'bills._id': billId }, { 'bills.$': 1 } );
             if( !data || !billId ) return { error: 'Data not found'};
 
-            const bill = await 
+            const bill = await BillController.getById( data.bills[0]._id );
 
-            return data;
+            return bill;
             
         } catch (error) {
             return { error: error }
